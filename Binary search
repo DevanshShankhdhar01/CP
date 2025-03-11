@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+#define int long long 
+
+//__________________________________________________________________________________________________________
+
+// Binary search on array
+
+int binarysearch(int num,vector<int>&arr){
+    int n=arr.size();
+    int low=0;
+    int high=n-1;
+    int ans=0;
+    while(low<=high){
+        int mid=low+(high-low)/2;
+        if(check(arr[mid],arr)){
+            ans=mid;
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    return ans;
+}
+
+//__________________________________________________________________________________________________________
+
+
+
+// Finding square root 
+
+int bs(int n){
+    int low=0;
+    int high=n;
+    int ans=0;
+    while(low<=high){
+        int mid=low+(high-low)/2;
+        if(mid<=(n/mid)){  // here can also use (1ll*mid*mid<=n) depending upon constraints..
+            ans=mid;
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    return ans;
+}
+
+//__________________________________________________________________________________________________________
+
+
+
+
+
+
