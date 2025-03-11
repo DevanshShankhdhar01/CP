@@ -1,0 +1,119 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+
+//__________________________________________________________________________________________________________
+
+// creating graph
+
+vector<vector<int>>adj(n,vector<int>());
+for(int i=0;i<edges.size();i++){
+    int u=edges[i][0];
+    int v=edges[i][1];
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+
+//__________________________________________________________________________________________________________
+
+// breadth first search
+
+// in main::
+
+vector<vector<int>>adj(n+1,vector<int>());
+vector<int>vis(n+1,0);
+
+void bfs(vector<vector<int>>&adj,vector<int>&vis,int ind){
+    queue<int>q;
+    q.push(ind);
+    vis[ind]=1;
+    while(!q.empty()){
+        int node=q.front();
+        q.pop();
+        for(auto it:adj[node]){
+            if(!vis[it]){
+                q.push(it);
+                vis[it]=1;
+            }
+        }
+    }
+}
+
+
+//__________________________________________________________________________________________________________
+
+// depth first search
+
+// in main::
+vis[ind]=1;
+vector<vector<int>>adj(n+1,vector<int>());
+vector<int>vis(n+1,0);
+
+void dfs(vector<vector<int>>&adj,vector<int>&vis,int ind){
+    for(auto it:adj[ind]){
+        if(!vis[it]){
+            vis[it]=1;
+            dfs(adj,vis,it);
+        }
+    }
+}
+
+
+//__________________________________________________________________________________________________________
+
+// unweighted graph shortest distance
+
+// in main::
+
+vector<vector<int>>adj(n+1,vector<int>());
+vector<int>vis(n+1,0);
+vector<int>dist(n+1,1e8);
+
+void shortest(vector<vector<int>>&adj,vector<int>&vis,int ind,vector<int>&dist){
+    queue<pair<int,int>>q;
+    q.push({ind,0});
+    vis[ind]=1;
+    dist[ind]=0;
+    while(!q.empty()){
+        int node=q.front().first;
+        int wt=q.front().second;
+        q.pop();
+        for(auto it:adj[node]){
+            if(!vis[it]){
+                q.push({it,wt+1});
+                vis[it]=1;
+                dist[it]=wt+1;
+            }
+        }
+    }
+}
+
+
+//__________________________________________________________________________________________________________
+
+// weighted graph shortest distance
+
+// in main::
+
+vector<vector<pair<int,int>>>adj(n+1,vector<pair<int,int>>());
+vector<int>dist(n+1,1e8);
+
+void djikstra(vector<vector<pair<int,int>>>&adj,int start,vector<int>&dist){
+    
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+    pq.push({0,start});
+    dist[start]=0;
+    while(!pq.empty()){
+        int wt=pq.top().first;
+        int node=pq.top().second;
+        pq.pop();
+        for(auto it:adj[node]){
+            if(wt+it.second<dist[it.first]){
+                dist[it.first]=wt+it.second;
+                pq.push({dist[it.first],it.first});
+            }
+        }
+    }
+}
+
+//__________________________________________________________________________________________________________
