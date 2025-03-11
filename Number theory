@@ -1,0 +1,110 @@
+#include <iostream>
+using namespace std;
+#define int long long 
+int32_t main() {
+    int t;
+    cin>>t;
+    while(t--){
+        
+    }
+}
+
+//_________________________________________________________________________________________
+
+// INPUT OUTPUT
+
+
+vector<int>arr(n+1);
+for(int i=1;i<=n;i++){
+    cin>>arr[i];
+}
+
+for(int i=1;i<=n;i++){
+    cout<<arr[i]<<" ";
+}
+cout<<endl;
+
+vector<vector<int>>arr(n,vector<int>(m));
+for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++){
+        cin>>arr[i][j];
+    }
+}
+
+for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++){
+        cout<<arr[i][j]<<" ";
+    }
+    cout<<endl;
+}
+
+//____________________________________________________________________________________________________
+
+
+//PRIME NUMBERS UPTO 1e5
+
+const long long N=1e5+1;
+vector<int>generate_primes(){
+    vector<int>primes;
+    vector<bool>a(N+1,true);
+    a[1]=false;a[0]=false;
+    for(int i=2;i<N;i++){
+        if(!a[i]){
+            continue;
+        }
+        primes.push_back(i);
+        for(int j=1ll*i*i;j<=N;j+=i){
+            a[j]=false;
+        }
+    }
+    return primes;
+}
+
+//___________________________________________________________________________________________________
+
+// CALCULATING LOG(N)
+
+int calclog(int n){
+    int cnt=0;
+    while(n>0){
+        cnt++;
+        n=n>>1;
+    }
+    return cnt; // this will return 1 greater than the log i.e the farthest set bit
+}
+
+//____________________________________________________________________________________________________
+
+
+// CALCULATING POWER (MODULAR EXPONENTIATION)
+
+
+#define int long long 
+
+const int MOD = 1e9 + 7
+
+int power(int base, int exp, int mod) {
+    int result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) {  // If exponent is odd, multiply base with result
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;  // Square the base
+        exp /= 2;  // Reduce exponent by half
+    }
+    return result;
+}
+
+// (a-b)%mod = ((a-b)%mod+mod)%mod
+
+
+// Function to calculate (a / b) % mod
+int mod_divide(int a, int b, int mod) {
+    int b_inv = power(b, mod - 2, mod);  // Compute b^(-1) using Fermat's theorem
+    return (a * b_inv) % mod;
+}
+
+
+//_________________________________________________________________________________________________________
+
+
