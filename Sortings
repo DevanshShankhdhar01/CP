@@ -1,1 +1,12 @@
 
+// Sorting Strings on basis of length in ascending order
+
+struct CompareLength {
+        bool operator()(const string &a, const string &b) {
+            return a.size() < b.size();  // Sort based on length
+        }
+    };
+// sort(words.begin(),words.end(),CompareLength());
+// for descending, just replace < to >
+
+//_________________________________________________________________________________________________________________________________________________
