@@ -1,0 +1,97 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class FenwickTree {
+    vector<int> BIT;
+    int n;
+
+public:
+    FenwickTree(int size) {
+        n = size;
+        BIT.assign(n + 1, 0); // 1-based indexing
+    }
+
+    // Add 'delta' to index 'idx'
+    void update(int idx, int delta) {
+        while (idx <= n) {
+            BIT[idx] += delta;
+            idx += idx & -idx;  // Move to next affected index
+        }
+    }
+
+    // Get sum from 1 to idx
+    int query(int idx) {
+        int sum = 0;
+        while (idx > 0) {
+            sum += BIT[idx];
+            idx -= idx & -idx;  // Move to parent index
+        }
+        return sum;
+    }
+
+    // Get sum in range [l, r]
+    int rangesum(int l, int r) {
+        return query(r) - query(l - 1);
+    }
+};
+int main() {
+	int t;
+	cin>>t;
+	while(t--){
+	    int n;
+	    cin>>n;
+	    FenwickTree ft(n); // creates a fenwick tree of size (n+1) due to 1 based indexing
+	    vector<int>arr(n+1);
+	    for(int i=1;i<=n;i++){
+	        cin>>arr[i];
+	        ft.update(i, arr[i]);  // updates each element at correct position and creates the fenwick tree
+	    }
+	    int q;
+	    cin>>q;
+	    while(q--){
+	        int a,l,r;
+	        cin>>a>>l>>r;
+	        if(a==1){
+	            ft.update(l,r-arr[l]); // update value r at index l;(but we pass delta)  // if the query type is 1, we update
+	        }
+	        else{
+	            cout<<ft.query(r)-ft.query(l-1)<<endl; // else we find the prefix sum from l to r
+	        }
+	    }
+	    
+	    
+	}
+
+}
+
+int main() {
+    FenwickTree ft(10);  // Example: 10 elements
+
+    ft.update(1, 5);  // Add 5 to index 1
+    ft.update(3, 7);  // Add 7 to index 3
+    ft.update(5, 6);  // Add 6 to index 5
+
+    cout << "Prefix Sum up to index 5: " << ft.query(5) << endl; // Output: 18
+    cout << "Range Sum [2,5]: " << ft.range_sum(2, 5) << endl;   // Output: 13
+
+    return 0;
+}
+
+// Important Points
+
+1) Fenwick tree will always be one indexed, so while asking for a query and updating a query always use 1 based indexing
+2) We can do mainly three operations:
+  i} update: To make a fenwick tree at the start and then using it to make changes to an index during operations
+  ii} query: This will give us the prefix sum upto index r (remember 1-based)
+  iii} rangesum: we can also do this using queryby asking for query(r)-query(l-1) to return us the range sum from l to r
+  
+
+
+
+
+
+
+
+
+
+
