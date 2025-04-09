@@ -74,6 +74,46 @@ int mod_divide(int a, int b, int mod) {
     return (a * b_inv) % mod;
 }
 
+//_____________________FACTORIALS_ AND NCR________________________________________________________________________________________
+
+
+
+const int mod = 1e9 + 7;
+const int MAXN = 1e5 + 5; // Adjust based on max value of n you'll use
+
+vector<int> fact(MAXN), inv_fact(MAXN);
+
+// Binary exponentiation: a^b % mod
+int power(int a, int b) {
+    int res = 1;
+    a %= mod;
+    while (b > 0) {
+        if (b & 1) res = (res * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
+    }
+    return res;
+}
+
+// Precompute factorials and inverse factorials
+void precompute_factorials() {
+    fact[0] = 1;
+    for (int i = 1; i < MAXN; i++) {
+        fact[i] = (fact[i - 1] * i) % mod;
+    }
+
+    inv_fact[MAXN - 1] = power(fact[MAXN - 1], mod - 2); // Fermat's Little Theorem
+    for (int i = MAXN - 2; i >= 0; i--) {
+        inv_fact[i] = (inv_fact[i + 1] * (i + 1)) % mod;
+    }
+}
+
+// ✅ Reusable function to compute nCr % mod
+int nCr(int n, int r) {
+    if (r < 0 || r > n) return 0;
+    return fact[n] * inv_fact[r] % mod * inv_fact[n - r] % mod;
+}
+
 
 //_____________Leftmost set bit____________________________________________________________________________________________
 
