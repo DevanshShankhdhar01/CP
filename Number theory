@@ -30,6 +30,44 @@ vector<int>generate_primes(){
     return primes;
 }
 
+
+//___________________SPF(Smallest prime factor)_______________________________________________________________
+
+//Used to easily generate the factors of any number.
+
+// Say i need factores of 36. I ask spf of 36. it is 2. so 36/=2 gives 18. now spf of 18 will give 2 and num becomes 9. now spf of 9 is 3 and 
+//num becomes 3. now spf of 3 is 3 and num becomes 1. STOP.
+// Thus we got all prime factors of number 36 i.e 2x2x3x3.
+
+
+const int MAXN=1e6+5;
+int spf[MAXN];
+
+void pre(){
+    for(int i=0;i<=MAXN;i++){
+        spf[i]=i;
+    }
+    for(int i=2;i<=MAXN;i++){
+        if(spf[i]==i){
+            for(int j=1ll*i*i;j<=MAXN;j+=i){
+                if(spf[j]==j){
+                    spf[j]=i;
+                }
+            }
+        }
+    }
+}
+
+// inside main logic
+
+while(x!=1){
+    v.pb(spf[x]);
+    x/=spf[x];
+}
+
+
+
+
 //_____________CALCULATING LOG(N)______________________________________________________________________________________
 
 
