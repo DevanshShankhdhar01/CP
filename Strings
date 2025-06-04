@@ -30,3 +30,36 @@ int count_unique_substrings(string const& s) {
     }
     return cnt;
 }
+______________________________Optimization to prevent collisions___________________________________________
+
+const int mod1 = 1e9 + 7;
+const int mod2 = 1e9 + 9;
+const int p = 31;
+
+vector<int> h1(n + 1, 0), h2(n + 1, 0);
+vector<int> p_pow1(n + 1, 1), p_pow2(n + 1, 1);
+
+for (int i = 0; i < n; i++) {
+    p_pow1[i + 1] = (p_pow1[i] * p) % mod1;
+    p_pow2[i + 1] = (p_pow2[i] * p) % mod2;
+
+    h1[i + 1] = (h1[i] + (s[i] - 'a' + 1) * p_pow1[i]) % mod1;
+    h2[i + 1] = (h2[i] + (s[i] - 'a' + 1) * p_pow2[i]) % mod2;
+}
+
+int ans = 0;
+for (int len = 1; len <= n; len++) {
+    set<pair<int, int>> st;
+    for (int i = 0; i + len <= n; i++) {
+        int j = i + len;
+
+        int hash1 = (h1[j] - h1[i] + mod1) % mod1;
+        hash1 = (hash1 * p_pow1[n - i]) % mod1;
+
+        int hash2 = (h2[j] - h2[i] + mod2) % mod2;
+        hash2 = (hash2 * p_pow2[n - i]) % mod2;
+
+        st.insert({hash1, hash2});
+    }
+    ans += st.size();
+}
