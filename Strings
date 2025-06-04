@@ -1,4 +1,4 @@
-//Function to find unique substrings using rolling hashing
+____________________Function to find unique substrings using rolling hashing__________________________________
 
 int count_unique_substrings(string const& s) {
     int n = s.size();
@@ -30,6 +30,7 @@ int count_unique_substrings(string const& s) {
     }
     return cnt;
 }
+
 ______________________________Optimization to prevent collisions___________________________________________
 
 const int mod1 = 1e9 + 7;
