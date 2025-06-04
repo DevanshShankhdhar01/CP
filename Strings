@@ -109,6 +109,19 @@ vector<int> prefix_function(string s) {
     return lps;
 }
 
-________________________________________________________________________________________________
+_________________________Automata to match a string s in text t_______________________________________________________________________
 
-
+void compute_automaton(string s, vector<vector<int>>& aut) {
+    s += '#';
+    int n = s.size();
+    vector<int> pi = prefix_function(s); // generate the prefix function of s
+    aut.assign(n, vector<int>(26));  // generate the automata table that indicates if we are at the state                                         //  i(obviously from 0->n) and we encounter character no. c, which                                           //  state will we get to...
+    for (int i = 0; i < n; i++) {
+        for (int c = 0; c < 26; c++) {
+            if (i > 0 && 'a' + c != s[i])   // go back the same way as we used to go while building the                                                    //  prefix function(just using the previously stored results)
+                aut[i][c] = aut[pi[i-1]][c];
+            else
+                aut[i][c] = i + ('a' + c == s[i]);
+        }
+    }
+}
