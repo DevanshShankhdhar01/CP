@@ -1,0 +1,32 @@
+//Function to find unique substrings using rolling hashing
+
+int count_unique_substrings(string const& s) {
+    int n = s.size();
+
+    const int p = 31;   // to mark the number of characters
+    const int m = 1e9 + 9; // modulo
+    vector<long long> p_pow(n); // to store the powers of p
+    p_pow[0] = 1;
+    for (int i = 1; i < n; i++)
+        p_pow[i] = (p_pow[i-1] * p) % m; // precomputiong the powers of p
+
+    vector<long long> h(n + 1, 0);
+    for (int i = 0; i < n; i++)
+        h[i+1] = (h[i] + (s[i] - 'a' + 1) * p_pow[i]) % m; creating the hash of all prefixes of string
+
+    int cnt = 0;
+    for (int l = 1; l <= n; l++) {
+        unordered_set<long long> hs; // to count the unique substrings of length l
+
+// for each strting position calculating the hash value of the 
+//substring of length l starting from that position
+        
+        for (int i = 0; i <= n - l; i++) {
+            long long cur_h = (h[i + l] + m - h[i]) % m; 
+            cur_h = (cur_h * p_pow[n-i-1]) % m;
+            hs.insert(cur_h);
+        }
+        cnt += hs.size();
+    }
+    return cnt;
+}
