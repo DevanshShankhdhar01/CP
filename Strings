@@ -95,7 +95,7 @@ vector<int> rabin_karp(string const& s, string const& t) {
 
 ____________________________________________KMP FOR STRING MATCHING________________________________________
 
-vector<int> prefix_function(string s) {
+vector<int> prefix_function(string &s) {
     int n = (int)s.length();
     vector<int> lps(n);
     for (int i = 1; i < n; i++) {
@@ -111,7 +111,7 @@ vector<int> prefix_function(string s) {
 
 _________________________Automata to match a string s in text t_______________________________________________________________________
 
-void compute_automaton(string s, vector<vector<int>>& aut) {
+void compute_automaton(string &s, vector<vector<int>>& aut) {
     s += '#';
     int n = s.size();
     vector<int> pi = prefix_function(s); // generate the prefix function of s
@@ -128,7 +128,7 @@ void compute_automaton(string s, vector<vector<int>>& aut) {
 
 __________________________________Z-funtion array for string matching__________________________________________________
 
-vector<int> z_function(string s) {
+vector<int> z_function(string &s) {
     int n = s.size();
     vector<int> z(n);
     int l = 0, r = 0;
@@ -195,7 +195,7 @@ vector<int> sort_cyclic_shifts(string const& s) {
 }
 // We will get the order of suffixes sorted in lexicographical order
 
-vector<int> suffix_array_construction(string s) {
+vector<int> suffix_array_construction(string &s) {
     s += "$";
     vector<int> sorted_shifts = sort_cyclic_shifts(s);
     sorted_shifts.erase(sorted_shifts.begin());
@@ -232,7 +232,7 @@ vector<int> lcp_construction(string const& s, vector<int> const& p) {
 
 _________________________________________Manacher's Algorithm for finding Palindromes_________________________________________________________
 
-vector<int> manacher_odd(string s) {
+vector<int> manacher_odd(string &s) {
     int n = s.size();
     s = "$" + s + "^";
     vector<int> p(n + 2);
@@ -249,7 +249,7 @@ vector<int> manacher_odd(string s) {
     return vector<int>(begin(p) + 1, end(p) - 1);
 }
 
-vector<int> manacher(string s) {
+vector<int> manacher(string &s) {
     string t;
     for(auto c: s) {
         t += string("#") + c;
