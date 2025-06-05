@@ -193,6 +193,7 @@ vector<int> sort_cyclic_shifts(string const& s) {
     }
     return p;
 }
+// We will get the order of suffixes sorted in lexicographical order
 
 vector<int> suffix_array_construction(string s) {
     s += "$";
@@ -210,7 +211,8 @@ vector<int> lcp_construction(string const& s, vector<int> const& p) {
         rank[p[i]] = i;
 
     int k = 0;
-    vector<int> lcp(n-1, 0);
+    vector<int> lcp(n-1, 0);   // size of lcp is (n-1) i.e how much the (i)th suffix match with the (i+1)th suffix 
+                               //  in leicographical order
     for (int i = 0; i < n; i++) {
         if (rank[i] == n - 1) {
             k = 0;
@@ -225,4 +227,7 @@ vector<int> lcp_construction(string const& s, vector<int> const& p) {
     }
     return lcp;
 }
+// This lcp can for e.g b used as a powerful tool to find no. of diffrent substrings in O(n) using the formula of 
+// Total substrings-No. of overlaps i.e (n*(n+1)/2)-(sum of all values in the lps array)
+
 __________________________________________________________________________________________________
