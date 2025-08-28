@@ -72,7 +72,7 @@ public:
             lazy[node] = 0;
         }
         if(low==high){
-            seg[node]=val;
+            seg[node]+=val;
             return;
         }
         
