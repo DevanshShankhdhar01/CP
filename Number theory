@@ -89,7 +89,7 @@ int calclog(int n){
 
 #define int long long 
 
-const int MOD = 1e9 + 7
+const int mod = 1e9 + 7;
 
 int power(int base, int exp, int mod) {
     int result = 1;
@@ -107,7 +107,7 @@ int power(int base, int exp, int mod) {
 
 
 // Function to calculate (a / b) % mod
-int mod_divide(int a, int b, int mod) {
+int mod_divide(int a, int b) {
     int b_inv = power(b, mod - 2, mod);  // Compute b^(-1) using Fermat's theorem
     return (a * b_inv) % mod;
 }
