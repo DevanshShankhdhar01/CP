@@ -213,3 +213,34 @@ bool isPrime(int n) {
     }
     return true;
 }
+
+-----------------------------------------------Calculating nCr when n is upto 1e9 and r is upto 1e5-----------------------------------------
+
+
+// fast exponentiation for modular inverse
+int mod_pow(int base, int exp) {
+    int res = 1;
+    base %= mod;
+    while (exp > 0) {
+        if (exp & 1) res = (res * base) % mod;
+        base = (base * base) % mod;
+        exp >>= 1;
+    }
+    return res;
+}
+
+// computes nCr % mod for n up to 1e9, r up to 1e5, mod prime
+int nCr(int n, int r) {
+    if (r < 0 || r > n) return 0;
+    if (r > n - r) r = n - r;  // symmetry nCr = nC(n-r)
+
+    int numerator = 1, denominator = 1;
+    for (int i = 0; i < r; ++i) {
+        numerator = (numerator * ((n - i) % mod)) % mod;
+        denominator = (denominator * (i + 1)) % mod;
+    }
+
+    // modular inverse of denominator
+    int denom_inv = mod_pow(denominator, mod - 2);
+    return (numerator * denom_inv) % mod;
+}
