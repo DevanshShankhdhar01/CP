@@ -1,2 +1,2 @@
-# CP
+# Competitive Programming
 Cp codes
