@@ -1,0 +1,45 @@
+struct MergeSortTree {
+    int n;
+    vector<vector<int>> tree;
+
+    MergeSortTree(const vector<int> &arr) {
+        n = arr.size();
+        tree.resize(4*n);
+        build(1, 0, n-1, arr);
+    }
+
+    // Build tree
+    void build(int idx, int l, int r, const vector<int> &arr) {
+        if (l == r) {
+            tree[idx] = {arr[l]};
+            return;
+        }
+        int mid = (l + r) >> 1;
+        build(idx<<1, l, mid, arr);
+        build(idx<<1|1, mid+1, r, arr);
+        tree[idx].resize(tree[idx<<1].size() + tree[idx<<1|1].size());
+        merge(tree[idx<<1].begin(), tree[idx<<1].end(),
+              tree[idx<<1|1].begin(), tree[idx<<1|1].end(),
+              tree[idx].begin());
+    }
+
+    // Count of values <= x in [ql, qr]
+    int query_le(int idx, int l, int r, int ql, int qr, int x) {
+        if (qr < l || r < ql) return 0;
+        if (ql <= l && r <= qr) {
+            return upper_bound(tree[idx].begin(), tree[idx].end(), x)
+                   - tree[idx].begin();
+        }
+        int mid = (l + r) >> 1;
+        return query_le(idx<<1, l, mid, ql, qr, x) +
+               query_le(idx<<1|1, mid+1, r, ql, qr, x);
+    }
+
+    // Public wrapper
+    int query_le(int l, int r, int x) {
+        return query_le(1, 0, n-1, l, r, x);
+    }
+};
+
+
+// To find number of elements less than / less than or equal to r in range [l,r]
