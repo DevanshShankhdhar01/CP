@@ -56,6 +56,13 @@ int main() {
     int n; 
     cin >> n;
 
+    for (int i = 1; i <= n; i++) {
+            adj[i].clear();
+            for (int j = 0; j < LOG; j++)
+                up[i][j] = 0;
+            depth[i] = 0;
+        }
+
     for(int i = 1; i < n; i++) {
         int u, v;
         cin >> u >> v;
