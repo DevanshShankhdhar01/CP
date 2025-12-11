@@ -1,102 +1,54 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define int long long
-
-const int inf=1e18;
-
-class segmentTree{
-    
+class SegTree {
 public:
     int n;
-    vector<int>seg;
-    
-    // Initialize with size
-    
-    segmentTree(int size){
-        n=size;
-        seg.resize(4*n,0);  // 4*n is enough space for the tree
+    vector<long long> seg;
+
+    SegTree(int n) {
+        this->n = n;
+        seg.assign(4*n, 0);
     }
-    
-    // Build the tree from an input array
-    
-    void build(int node,vector<int>&arr,int low,int high){
-        
-        if(low==high){
-            seg[node]=arr[low];
+
+    long long merge(long long a, long long b) {
+        return a + b;   // change for max/min/gcd
+    }
+
+    void build(int node, int low, int high, vector<long long>& arr) {
+        if (low == high) {
+            seg[node] = arr[low];
             return;
         }
-        int mid=low+(high-low)/2;
-        
-        build(2*node+1,arr,low,mid);
-        build(2*node+2,arr,mid+1,high);
-        
-        seg[node]=min(seg[2*node+1],seg[2*node+2]); // change to min/max/gcd etc. if needed
-        
+
+        int mid = (low + high)/2;
+
+        build(2*node+1, low, mid, arr);
+        build(2*node+2, mid+1, high, arr);
+
+        seg[node] = merge(seg[2*node+1], seg[2*node+2]);
     }
-    
-    // Query in range [l, r]
-    int query(int node,int low,int high,int l,int r){
-        
-        // No overlap
-        if(r<low || l>high){ 
-            return inf;
-        }
-        
-        // Complete overlap
-        if(l<=low && r>=high){ 
-            return seg[node];
-        }
-        
-        //partial overlap
-        int mid=low+(high-low)/2;
-        
-        int left=query(2*node+1,low,mid,l,r);
-        int right=query(2*node+2,mid+1,high,l,r);
-        
-        return min(left,right);
+
+    long long query(int node, int low, int high, int l, int r) {
+        if (r < low || high < l) return 0;
+        if (l <= low && high <= r) return seg[node];
+
+        int mid = (low + high)/2;
+
+        long long left  = query(2*node+1, low, mid, l, r);
+        long long right = query(2*node+2, mid+1, high, l, r);
+
+        return merge(left, right);
     }
-    
-    // Point update: set arr[ind] = val
-    void update(int node,int low,int high,int ind,int val){
-        if(low==high){
-            seg[node]=val;
+
+    void update(int node, int low, int high, int idx, long long val) {
+        if (low == high) {
+            seg[node] = val;
             return;
         }
-        
-        int mid=low+(high-low)/2;
-        
-        if(ind<=mid){
-            update(2*node+1,low,mid,ind,val);
-        }
-        else{
-            update(2*node+2,mid+1,high,ind,val);
-        }
-        seg[node]=min(seg[2*node+1],seg[2*node+2]);
+
+        int mid = (low + high)/2;
+
+        if (idx <= mid) update(2*node+1, low, mid, idx, val);
+        else update(2*node+2, mid+1, high, idx, val);
+
+        seg[node] = merge(seg[2*node+1], seg[2*node+2]);
     }
 };
-int32_t main() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr); std::cout.tie(nullptr);
-    int tt;
-    cin>>tt;
-    while(tt--){
-        int n;
-        cin>>n;
-        vector<int>arr(n);
-        for(int i=0;i<n;i++){
-            cin>>arr[i];
-        }
-        
-        segmentTree seg(n);
-        // Building the Tree
-        seg.build(0,arr,0,n-1); 
-        
-        // find min in range [1,3]
-        int ans=seg.query(0,0,n-1,1,3);
-        cout<<ans<<endl;
-        
-        // Update value at index 2 to 18.
-        seg.update(0,0,n-1,2,18);
-        
-    }
-}	
